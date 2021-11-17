@@ -110,8 +110,8 @@ services:
       - ./scripts/peregrine_setup.sh:/peregrine_setup.sh
       - ./datadictionary/gdcdictionary/schemas:/schemas_dir
     environment: &env
-      DICTIONARY_URL: https://s3.amazonaws.com/dictionary-artifacts/datadictionary/develop/schema.json
-      # PATH_TO_SCHEMA_DIR: /schemas_dir
+      #DICTIONARY_URL: https://biocommons-gen3-schema.s3.ap-southeast-2.amazonaws.com/cad-dev/cad.json
+      PATH_TO_SCHEMA_DIR: /schemas_dir
       REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost/_status"]
@@ -142,23 +142,23 @@ services:
       retries: 5
     depends_on:
       - postgres
-  guppy-service:
-    image: "quay.io/cdis/guppy:2021.03"
-    container_name: guppy-service
-    networks:
-      - devnet
-    volumes:
-      - ./Secrets/guppy_config.json:/guppy/guppy_config.json
-      - ./scripts/wait_for_esproxy.sh:/usr/bin/wait_for_esproxy.sh:ro
-    entrypoint: /usr/bin/wait_for_esproxy.sh
-    command: node --max-http-header-size 16000 dist/server/server.js
-    environment:
-      - GUPPY_CONFIG_FILEPATH=/guppy/guppy_config.json
-      - GEN3_ARBORIST_ENDPOINT=http://arborist-service
-      - GEN3_ES_ENDPOINT=http://esproxy-service:9200
-    depends_on:
-      - arborist-service
-      - esproxy-service
+#  guppy-service:
+#    image: "quay.io/cdis/guppy:2021.03"
+#    container_name: guppy-service
+#    networks:
+#      - devnet
+#    volumes:
+#      - ./Secrets/guppy_config.json:/guppy/guppy_config.json
+#      - ./scripts/wait_for_esproxy.sh:/usr/bin/wait_for_esproxy.sh:ro
+#    entrypoint: /usr/bin/wait_for_esproxy.sh
+#    command: node --max-http-header-size 16000 dist/server/server.js
+#    environment:
+#      - GUPPY_CONFIG_FILEPATH=/guppy/guppy_config.json
+#      - GEN3_ARBORIST_ENDPOINT=http://arborist-service
+#      - GEN3_ES_ENDPOINT=http://esproxy-service:9200
+#    depends_on:
+#      - arborist-service
+#      - esproxy-service
   esproxy-service:
     image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.12
     container_name: esproxy-service
@@ -208,6 +208,7 @@ services:
     depends_on:
       - peregrine-service
   portal-service:
+#    entrypoint: ["sh", "-c", "sleep 2073600"]
     image: "quay.io/cdis/data-portal:2021.03"
     container_name: portal-service
     command: ["bash", "/var/www/data-portal/waitForContainers.sh"]
@@ -270,27 +271,27 @@ services:
       - fence-service
       - portal-service
       - pidgin-service
-  tube-service:
-    image: "quay.io/cdis/tube:2021.03"
-    container_name: tube-service
-    command: bash -c "while true; do sleep 5; done"
-    networks:
-      - devnet
-    environment:
-      - DICTIONARY_URL=https://s3.amazonaws.com/dictionary-artifacts/datadictionary/develop/schema.json
-      - ES_URL=esproxy-service
-      - ES_INDEX_NAME=etl
-      - HADOOP_URL=hdfs://spark-service:9000
-      - HADOOP_HOST=spark-service
-    volumes:
-      - ./Secrets/etl_creds.json:/usr/share/gen3/tube/creds.json
-      - ./Secrets/etlMapping.yaml:/usr/share/gen3/tube/etlMapping.yaml
-      - ./Secrets/user.yaml:/usr/share/gen3/tube/user.yaml
-      - ./datadictionary:/tmp/datadictionary
-    depends_on:
-      - postgres
-      - esproxy-service
-      - spark-service
+#  tube-service:
+#    image: "quay.io/cdis/tube:2021.03"
+#    container_name: tube-service
+#    command: bash -c "while true; do sleep 5; done"
+#    networks:
+#      - devnet
+#    environment:
+#      - DICTIONARY_URL=https://biocommons-gen3-schema.s3.ap-southeast-2.amazonaws.com/cad-dev/cad.json
+#      - ES_URL=esproxy-service
+#      - ES_INDEX_NAME=etl
+#      - HADOOP_URL=hdfs://spark-service:9000
+#      - HADOOP_HOST=spark-service
+#    volumes:
+#      - ./Secrets/etl_creds.json:/usr/share/gen3/tube/creds.json
+#      - ./Secrets/etlMapping.yaml:/usr/share/gen3/tube/etlMapping.yaml
+#      - ./Secrets/user.yaml:/usr/share/gen3/tube/user.yaml
+#      - ./datadictionary:/tmp/datadictionary
+#    depends_on:
+#      - postgres
+#      - esproxy-service
+#      - spark-service
   spark-service:
     image: "quay.io/cdis/gen3-spark:2021.03"
     container_name: spark-service
@@ -306,18 +307,18 @@ services:
     environment:
       - HADOOP_URL=hdfs://0.0.0.0:9000
       - HADOOP_HOST=0.0.0.0
-  kibana-service:
-    image: docker.elastic.co/kibana/kibana-oss:6.5.4
-    container_name: kibana-service
-    environment:
-      - SERVER_NAME=kibana-service
-      - ELASTICSEARCH_URL=http://esproxy-service:9200
-    ports:
-      - 5601:5601
-    networks:
-      - devnet
-    depends_on:
-      - esproxy-service
+#  kibana-service:
+#    image: docker.elastic.co/kibana/kibana-oss:6.5.4
+#    container_name: kibana-service
+#    environment:
+#      - SERVER_NAME=kibana-service
+#      - ELASTICSEARCH_URL=http://esproxy-service:9200
+#    ports:
+#      - 5601:5601
+#    networks:
+#      - devnet
+#    depends_on:
+#      - esproxy-service
 networks:
   devnet:
 volumes:

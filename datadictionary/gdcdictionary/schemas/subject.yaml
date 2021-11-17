@@ -1,0 +1,289 @@
+$schema: http://json-schema.org/draft-04/schema#
+additionalProperties: false
+category: clinical
+description: Collection of some of the basics about a subject (e.g., characterization
+  by age, sex, or race).
+id: subject
+links:
+- backref: subjects
+  label: describes
+  multiplicity: many_to_one
+  name: projects
+  required: true
+  target_type: project
+namespace: https://gen3.biocommons.org.au
+program: '*'
+project: '*'
+properties:
+  $ref: _definitions.yaml#/ubiquitous_properties
+  alive:
+    description: vital status
+    termDef:
+    - source: null
+      term: null
+      term_id: null
+      term_version: None
+    type: boolean
+  anti_diabetic_treatment:
+    description: 'Self-reported use of anti-diabetic treatment. Response to the question: '
+    enum:
+    - diet
+    - oral
+    - insulin
+    - insulin and oral
+    - other
+    - none
+    enumDef: []
+    termDef:
+    - source: null
+      term: null
+      term_id: null
+      term_version: None
+  anti_hypertensive_medication:
+    description: 'Self- reported use of anti- hypertensive drugs. Response to the
+      question: Are you currently taking tablets for high blood pressure?'
+    enum:
+    - 'Yes'
+    - 'No'
+    - Unsure
+    - Unknown
+    - Not reported
+    enumDef: []
+    termDef:
+    - source: null
+      term: null
+      term_id: null
+      term_version: None
+  baseline_age:
+    description: age at the baseline date (years)
+    termDef:
+    - source: null
+      term: null
+      term_id: null
+      term_version: None
+    type: integer
+  baseline_date:
+    $ref: _definitions.yaml#/datetime
+    description: Date of baseline examination
+  bmi:
+    description: Body mass index calculated at baseline. (kg /(m^2))
+    termDef:
+    - source: efo
+      term: body mass index
+      term_id: EFO:0004340
+      term_version: None
+    type: number
+  bp_diastolic:
+    description: Resting diastolic blood pressure from the upper arm in a clinical
+      setting. (mmHg)
+    termDef:
+    - source: efo
+      term: diastolic blood pressure
+      term_id: EFO:0006336
+      term_version: None
+    type: number
+  bp_systolic:
+    description: Resting systolic blood pressure from the upper arm in a clinical
+      setting. (mmHg)
+    termDef:
+    - source: efo
+      term: systolic blood pressure
+      term_id: EFO:0006335
+      term_version: None
+    type: number
+  coronary_artery_disease:
+    description: self report of previous mi or stroke
+    enum:
+    - 'Yes'
+    - 'No'
+    - Unsure
+    - Unknown
+    - Not reported
+    enumDef: []
+    termDef:
+    - source: hpo
+      term: Coronary artery atherosclerosis
+      term_id: HP:0001677
+      term_version: '2021-10-10 00:00:00'
+  diabetes_type:
+    description: diabetes diagnosed by fasting blood glucose >=7 mmol/l or tx AHA
+      or 2 hour blood glucose >=11.1 mmol/l.
+    enum:
+    - KDM
+    - IFG
+    - IGT
+    - NDM
+    - NGT
+    enumDef:
+    - enumeration: IGT
+      source: hpo
+      term_id: HP:0040270
+      version: null
+    - enumeration: NDM
+      source: SNOMED
+      term_id: 870528001
+      version: null
+    - enumeration: NGT
+      source: SNOMED
+      term_id: 166926006
+      version: null
+    termDef:
+    - source: hpo
+      term: Diabetes mellitus
+      term_id: HP:0000819
+      term_version: '2021-10-10 00:00:00'
+  died_from_cvd:
+    description: Deaths with ICD10 code I10-I99 ( need to check)
+    termDef:
+    - source: null
+      term: null
+      term_id: null
+      term_version: None
+    type: boolean
+  education:
+    description: 'Response to the question: what is your highest level of education?'
+    enum:
+    - secondary school qualification
+    - nursing qualification
+    - teaching qualification
+    - trade certificate
+    - technician's certificate
+    - certificate
+    - certificate other than above
+    - associate diploma
+    - undergraduate diploma
+    - bachelor degree
+    - post-graduate diploma
+    - masters degree/doctorate
+    enumDef: []
+    termDef:
+    - source: null
+      term: null
+      term_id: null
+      term_version: None
+  has_hypertension:
+    description: self-reported hypertension
+    enum:
+    - 'Yes'
+    - 'No'
+    - Unsure
+    - Unknown
+    - Not reported
+    enumDef: []
+    termDef:
+    - source: hpo
+      term: Hypertension
+      term_id: HP:0000822
+      term_version: None
+  incident_diabetes:
+    description: 'incident cases of diabetes '
+    termDef:
+    - source: null
+      term: null
+      term_id: null
+      term_version: None
+    type: boolean
+  lipid_lowering_medication:
+    description: 'Self-reported use of lipid lowering drugs. Response to the question:
+      Are you taking tables to lower your cholesterol?'
+    enum:
+    - 'Yes'
+    - 'No'
+    - Unsure
+    - Unknown
+    - Not reported
+    enumDef: []
+    termDef:
+    - source: null
+      term: null
+      term_id: null
+      term_version: None
+  physical_activity:
+    description: exercise classification at baseline
+    enum:
+    - sufficient
+    - insufficient
+    - sedentary
+    enumDef: []
+    termDef:
+    - source: null
+      term: null
+      term_id: null
+      term_version: None
+  projects:
+    $ref: _definitions.yaml#/to_one_project
+  sex:
+    description: Biological sex of the participant
+    enum:
+    - male
+    - female
+    - unknown
+    - other
+    enumDef: []
+    termDef:
+    - source: null
+      term: null
+      term_id: null
+      term_version: None
+  smoking:
+    description: Indicates whether subject ever regularly smoked cigarettes.
+    enum:
+    - never
+    - former
+    - current
+    enumDef: []
+    termDef:
+    - source: null
+      term: null
+      term_id: null
+      term_version: None
+  survived_cvd_ten_years:
+    description: cases of non fatal MI and stroke (adjudicated from self report)
+    termDef:
+    - source: null
+      term: null
+      term_id: null
+      term_version: None
+    type: boolean
+  year_of_birth:
+    description: Date of birth (years)
+    termDef:
+    - source: null
+      term: null
+      term_id: null
+      term_version: None
+    type: integer
+  year_of_death:
+    description: date at death
+    termDef:
+    - source: null
+      term: null
+      term_id: null
+      term_version: None
+    type: integer
+required:
+- type
+- submitter_id
+- projects
+- baseline_age
+- sex
+- has_hypertension
+- smoking
+- lipid_lowering_medication
+- bmi
+- bp_systolic
+- bp_diastolic
+submittable: true
+systemProperties:
+- id
+- project_id
+- state
+- created_datetime
+- updated_datetime
+title: subject
+type: object
+uniqueKeys:
+- - id
+- - project_id
+  - submitter_id
+validators: null
