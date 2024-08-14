@@ -16,6 +16,8 @@ until curl -f -s -o /dev/null http://arborist-service/policy; do
     sleep 10
 done
 
+fence-create migrate
+
 fence-create sync --yaml user.yaml --arborist http://arborist-service
 
 cd /fence

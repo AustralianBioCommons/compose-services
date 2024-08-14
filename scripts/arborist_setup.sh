@@ -11,5 +11,9 @@ echo "postgres is ready"
 
 update-ca-certificates
 
+export PGSSLMODE="disable"
+
 ./migrations/latest
 ./bin/arborist
+
+
